@@ -596,9 +596,9 @@ class HBSYSTEM(DatagramProtocol):
 
                     # Userland actions -- typically this is the function you subclass for an application
                     self.dmrd_received(_peer_id, _rf_src, _dst_id, _seq, _slot, _call_type, _frame_type, _dtype_vseq, _stream_id, _data)
-            elif _packet[:4] == DMRA:    # Talker Alias Data
+            elif _command[:4] == DMRA:    # Talker Alias Data
                logger.debug('(%s) PD TalkerAlias, packet discarded - OPCODE: %s DATA: %s HMAC LENGTH: %s HMAC: %s', self._system, _packet[:4], repr(_packet[:53]), len(_packet[53:]), repr(_packet[53:]))
-            elif _packet[:4] == DMRG:
+            elif _command[:4] == DMRG:
                logger.debug('(%s) PD GPS, packet discarded - OPCODE: %s DATA: %s HMAC LENGTH: %s HMAC: %s', self._system, _packet[:4], repr(_packet[:53]), len(_packet[53:]), repr(_packet[53:]))
             elif _command == MSTN:    # Actually MSTNAK -- a NACK from the master
                 _peer_id = _data[6:10]
