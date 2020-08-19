@@ -403,10 +403,10 @@ class HBSYSTEM(DatagramProtocol):
 
                 # Userland actions -- typically this is the function you subclass for an application
                 self.dmrd_received(_peer_id, _rf_src, _dst_id, _seq, _slot, _call_type, _frame_type, _dtype_vseq, _stream_id, _data)
-        elif _packet[:4] == DMRA:    # Talker Alias Data
-           logger.debug('(%s) MD TalkerAlias, packet discarded - OPCODE: %s DATA: %s HMAC LENGTH: %s HMAC: %s', self._system, _packet[:4], repr(_packet[:53]), len(_packet[53:]), repr(_packet[53:]))
-        elif _packet[:4] == DMRG:
-           logger.debug('(%s) MD GPS, packet discarded - OPCODE: %s DATA: %s HMAC LENGTH: %s HMAC: %s', self._system, _packet[:4], repr(_packet[:53]), len(_packet[53:]), repr(_packet[53:]))
+        elif _command == DMRA:    # Talker Alias Data
+           logger.debug('(%s) MD TalkerAlias, packet discarded - OPCODE: %s DATA: %s HMAC LENGTH: %s HMAC: %s', self._system, _command, repr(_data[:53]), len(_data[53:]), repr(_data[53:]))
+        elif _command == DMRG:
+           logger.debug('(%s) MD GPS, packet discarded - OPCODE: %s DATA: %s HMAC LENGTH: %s HMAC: %s', self._system, _command, repr(_data[:53]), len(_data[53:]), repr(_data[53:]))
         elif _command == RPTL:    # RPTLogin -- a repeater wants to login
             _peer_id = _data[4:8]
             # Check to see if we've reached the maximum number of allowed peers
@@ -597,9 +597,9 @@ class HBSYSTEM(DatagramProtocol):
                     # Userland actions -- typically this is the function you subclass for an application
                     self.dmrd_received(_peer_id, _rf_src, _dst_id, _seq, _slot, _call_type, _frame_type, _dtype_vseq, _stream_id, _data)
             elif _command == DMRA:    # Talker Alias Data
-               logger.debug('(%s) PD TalkerAlias, packet discarded - OPCODE: %s DATA: %s HMAC LENGTH: %s HMAC: %s', self._system, _packet[:4], repr(_packet[:53]), len(_packet[53:]), repr(_packet[53:]))
+               logger.debug('(%s) PD TalkerAlias, packet discarded - OPCODE: %s DATA: %s HMAC LENGTH: %s HMAC: %s', self._system, _command, repr(_data[:53]), len(_data[53:]), repr(_data[53:]))
             elif _command == DMRG:
-               logger.debug('(%s) PD GPS, packet discarded - OPCODE: %s DATA: %s HMAC LENGTH: %s HMAC: %s', self._system, _packet[:4], repr(_packet[:53]), len(_packet[53:]), repr(_packet[53:]))
+               logger.debug('(%s) PD GPS, packet discarded - OPCODE: %s DATA: %s HMAC LENGTH: %s HMAC: %s', self._system, _command, repr(_data[:53]), len(_data[53:]), repr(_data[53:]))
             elif _command == MSTN:    # Actually MSTNAK -- a NACK from the master
                 _peer_id = _data[6:10]
                 if self._config['LOOSE'] or _peer_id == self._config['RADIO_ID']: # Validate the Radio_ID unless using loose validation
